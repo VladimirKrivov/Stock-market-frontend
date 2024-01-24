@@ -7,21 +7,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import stock.market.frontend.app.stockmarketfrontend.models.StockDto;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class MenuFrameController {
-
-//    private ObservableList<Stocks> data = FXCollections.observableArrayList(
-//            new Stocks("SEC1", "Shortname1", "RegNum1", "Name1", "ISIN1"),
-//            new Stocks("SEC2", "Shortname2", "RegNum2", "Name2", "ISIN2"),
-//            new Stocks("SEC3", "Shortname3", "RegNum3", "Name3", "ISIN3"),
-//            new Stocks("SEC4", "Shortname4", "RegNum4", "Name4", "ISIN4"),
-//            new Stocks("SEC5", "Shortname5", "RegNum5", "Name5", "ISIN5")
-//    );
-
 
     @FXML
     private Button addStockButt;
@@ -37,6 +36,9 @@ public class MenuFrameController {
 
     @FXML
     private Text headerText2;
+
+    @FXML
+    private TextField inputSearch;
 
     @FXML
     private Pane mainFrame;
@@ -73,12 +75,12 @@ public class MenuFrameController {
         isinColumn.setCellValueFactory(new PropertyValueFactory<>("isin"));
 
 
-//        tableContent.getColumns().setAll(secIdCol, shortnameCol, regNumberCol, nameCol, isinCol);
-        tableContent.getColumns().add(secIdColumn);
-        tableContent.getColumns().add(shortNameColumn);
-        tableContent.getColumns().add(regNumberColumn);
-        tableContent.getColumns().add(nameColumn);
-        tableContent.getColumns().add(isinColumn);
+        tableContent.getColumns().setAll(secIdColumn, shortNameColumn, regNumberColumn, nameColumn, isinColumn);
+//        tableContent.getColumns().add(secIdColumn);
+//        tableContent.getColumns().add(shortNameColumn);
+//        tableContent.getColumns().add(regNumberColumn);
+//        tableContent.getColumns().add(nameColumn);
+//        tableContent.getColumns().add(isinColumn);
         // Создание списка элементов для таблицы
         ObservableList<Stocks> stocksList = FXCollections.observableArrayList();
 
@@ -131,7 +133,50 @@ public class MenuFrameController {
         }
     }
 
+    @FXML
+    private void handleAddStockButt() {
+        String searchValue = inputSearch.getText();
+        String url = "http://localhost:8080/api/v1/stock/find?name=" + searchValue;
 
+        try {
+            URL apiUrl = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+            connection.setRequestMethod("GET");
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                // Чтение ответа от сервера
+                BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = responseReader.readLine()) != null) {
+                    response.append(line);
+                    System.out.println(response);
+                }
+                responseReader.close();
+
+                System.out.println(response);
+
+                // Обработка полученного JSON
+//                StockDto stockDto = parseStockDto(response.toString());
+                // Дальнейшая обработка объекта stockDto...
+
+            } else {
+                System.out.println("Ошибка при выполнении запроса. Код ошибки: " + responseCode);
+            }
+
+            connection.disconnect();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private StockDto parseStockDto(String json) {
+        // Здесь нужно реализовать код для парсинга JSON и создания объекта StockDto
+        // Например, можно использовать библиотеку GSON: https://github.com/google/gson
+        return null;
+    }
 
 }
 

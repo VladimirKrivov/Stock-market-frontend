@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -38,17 +38,20 @@
             <Font name="Roboto" size="17.0" />
          </font>
       </Button>
-      <Button id="loginButton" fx:id="addStockButt" layoutX="20.0" layoutY="195.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="314.0" text="Добавить ценную бумагу в анализ">
-         <font>
-            <Font name="Roboto" size="17.0" />
-         </font>
-      </Button>
       <Button id="loginButton" fx:id="delStockButt" layoutX="20.0" layoutY="244.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="314.0" text="Удалить ценную бумагу из анализа">
          <font>
             <Font name="Roboto" size="17.0" />
          </font>
       </Button>
-      <Pane layoutX="356.0" prefHeight="74.0" prefWidth="789.0" style="-fx-background-color: #403f3f;" />
+      <Pane layoutX="356.0" prefHeight="74.0" prefWidth="789.0" style="-fx-background-color: #403f3f;">
+         <children>
+            <Button id="loginButton" fx:id="searchStock" layoutX="450.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleAddStockButt" prefHeight="41.0" prefWidth="314.0" text="Добавить ценную бумагу в анализ">
+               <font>
+                  <Font name="Roboto" size="17.0" />
+               </font>
+            </Button>
+            <TextField fx:id="inputSearch" layoutX="22.0" layoutY="25.0" prefHeight="35.0" prefWidth="419.0" />
+         </children></Pane>
       <Pane layoutX="373.0" layoutY="87.0" prefHeight="574.0" prefWidth="755.0" style="-fx-background-color: white;">
          <children>
             <TableView fx:id="tableContent" layoutX="14.0" layoutY="22.0" prefHeight="533.0" prefWidth="735.0">
