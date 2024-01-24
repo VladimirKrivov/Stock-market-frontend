@@ -6,4 +6,6 @@ module stock.market.frontend.app.stockmarketfrontend {
 
     opens stock.market.frontend.app.stockmarketfrontend to javafx.fxml;
     exports stock.market.frontend.app.stockmarketfrontend;
+    exports stock.market.frontend.app.stockmarketfrontend.controller;
+    opens stock.market.frontend.app.stockmarketfrontend.controller to javafx.fxml;
 }
