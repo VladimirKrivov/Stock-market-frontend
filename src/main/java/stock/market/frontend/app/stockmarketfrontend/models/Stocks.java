@@ -2,24 +2,26 @@ package stock.market.frontend.app.stockmarketfrontend.models;
 
 import com.google.gson.Gson;
 
-public class StockDto {
+import java.util.Objects;
+
+
+public class Stocks {
     private String secId;
     private String shortname;
     private String regNumber;
     private String name;
     private String isin;
-    private String emitEntTitle;
 
-    public StockDto() {
+
+    public Stocks() {
     }
 
-    public StockDto(String secId, String shortname, String regNumber, String name, String isin, String emitEntTitle) {
+    public Stocks(String secId, String shortname, String regNumber, String name, String isin) {
         this.secId = secId;
         this.shortname = shortname;
         this.regNumber = regNumber;
         this.name = name;
         this.isin = isin;
-        this.emitEntTitle = emitEntTitle;
     }
 
     public String getSecId() {
@@ -62,11 +64,17 @@ public class StockDto {
         this.isin = isin;
     }
 
-    public String getEmitEntTitle() {
-        return emitEntTitle;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stocks stocks = (Stocks) o;
+        return Objects.equals(secId, stocks.secId) && Objects.equals(shortname, stocks.shortname) && Objects.equals(regNumber, stocks.regNumber) && Objects.equals(name, stocks.name) && Objects.equals(isin, stocks.isin);
     }
 
-    public void setEmitEntTitle(String emitEntTitle) {
-        this.emitEntTitle = emitEntTitle;
+    @Override
+    public int hashCode() {
+        return Objects.hash(secId, shortname, regNumber, name, isin);
     }
 }

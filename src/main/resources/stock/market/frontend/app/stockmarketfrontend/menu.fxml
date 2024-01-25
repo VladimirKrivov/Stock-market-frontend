@@ -31,14 +31,14 @@
                   <Font name="Roboto" size="17.0" />
                </font>
             </Button>
+            <Button id="loginButton" fx:id="delStockButt" layoutX="22.0" layoutY="194.0" mnemonicParsing="false" onAction="#deletCollumn" prefHeight="41.0" prefWidth="314.0" text="Удалить ценную бумагу из анализа">
+               <font>
+                  <Font name="Roboto" size="17.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <Button id="loginButton" fx:id="rasButton" layoutX="20.0" layoutY="146.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="314.0" text="Расчет доходности">
-         <font>
-            <Font name="Roboto" size="17.0" />
-         </font>
-      </Button>
-      <Button id="loginButton" fx:id="delStockButt" layoutX="20.0" layoutY="244.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="314.0" text="Удалить ценную бумагу из анализа">
          <font>
             <Font name="Roboto" size="17.0" />
          </font>

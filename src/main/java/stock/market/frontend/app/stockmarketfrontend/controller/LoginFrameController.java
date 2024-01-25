@@ -53,12 +53,16 @@ public class LoginFrameController {
     private void handleLoginButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("menu.fxml"));
         Scene scene = new Scene(loader.load(), 1145, 675);
+        MenuFrameController menuController = loader.getController();
 
         Stage stage = new Stage();
         stage.setTitle("Stock Market App");
         stage.setScene(scene);
+
         stage.setResizable(false);
         stage.show();
+
+        menuController.initialize();
 
         // Закрываем главное окно
         Stage primaryStage = (Stage) loginButton.getScene().getWindow();

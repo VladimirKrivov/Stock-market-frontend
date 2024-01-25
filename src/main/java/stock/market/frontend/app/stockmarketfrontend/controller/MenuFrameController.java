@@ -1,26 +1,33 @@
 package stock.market.frontend.app.stockmarketfrontend.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import stock.market.frontend.app.stockmarketfrontend.models.StockDto;
+import stock.market.frontend.app.stockmarketfrontend.models.Stocks;
+import stock.market.frontend.app.stockmarketfrontend.service.StocksAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 public class MenuFrameController {
+
+    List<Stocks> stocksListTableItem = new ArrayList<>();
+
 
     @FXML
     private Button addStockButt;
@@ -58,80 +65,24 @@ public class MenuFrameController {
     @FXML
     void ClickHistory(ActionEvent event) {
 
-// Создание столбцов таблицы
-        TableColumn<Stocks, String> secIdColumn = new TableColumn<>("SEC ID");
-        secIdColumn.setCellValueFactory(new PropertyValueFactory<>("secId"));
-
-        TableColumn<Stocks, String> shortNameColumn = new TableColumn<>("Short Name");
-        shortNameColumn.setCellValueFactory(new PropertyValueFactory<>("shortname"));
-
-        TableColumn<Stocks, String> regNumberColumn = new TableColumn<>("Reg Number");
-        regNumberColumn.setCellValueFactory(new PropertyValueFactory<>("regNumber"));
-
-        TableColumn<Stocks, String> nameColumn = new TableColumn<>("Name");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-        TableColumn<Stocks, String> isinColumn = new TableColumn<>("ISIN");
-        isinColumn.setCellValueFactory(new PropertyValueFactory<>("isin"));
-
-
-        tableContent.getColumns().setAll(secIdColumn, shortNameColumn, regNumberColumn, nameColumn, isinColumn);
-//        tableContent.getColumns().add(secIdColumn);
-//        tableContent.getColumns().add(shortNameColumn);
-//        tableContent.getColumns().add(regNumberColumn);
-//        tableContent.getColumns().add(nameColumn);
-//        tableContent.getColumns().add(isinColumn);
-        // Создание списка элементов для таблицы
-        ObservableList<Stocks> stocksList = FXCollections.observableArrayList();
-
-        // Добавление 5 элементов в список
-        stocksList.add(new Stocks("1", "Stock 1", "12345", "Stock 1 Name", "ABC123"));
-        stocksList.add(new Stocks("2", "Stock 2", "56789", "Stock 2 Name", "DEF456"));
-        stocksList.add(new Stocks("3", "Stock 3", "98765", "Stock 3 Name", "GHI789"));
-        stocksList.add(new Stocks("4", "Stock 4", "43210", "Stock 4 Name", "JKL012"));
-        stocksList.add(new Stocks("5", "Stock 5", "67890", "Stock 5 Name", "MNO345"));
-
 
         // Установка списка элементов для таблицы
-        tableContent.setItems(stocksList);
+
     }
 
+    @FXML
+    void deletCollumn(ActionEvent event) {
+        // Получаем выбранную строку
+//        TableView<Stocks> tableView = (TableView<Stocks>) event.getSource();
+        ObservableList<Stocks> selectedItems = tableContent.getSelectionModel().getSelectedItems();
 
-    public static class Stocks {
-        private String secId;
-        private String shortname;
-        private String regNumber;
-        private String name;
-        private String isin;
 
-        public Stocks(String secId, String shortname, String regNumber, String name, String isin) {
-            this.secId = secId;
-            this.shortname = shortname;
-            this.regNumber = regNumber;
-            this.name = name;
-            this.isin = isin;
-        }
+        // Удаляем выбранные строки
+        tableContent.getItems().removeAll(selectedItems);
 
-        public String getSecId() {
-            return secId;
-        }
 
-        public String getShortname() {
-            return shortname;
-        }
-
-        public String getRegNumber() {
-            return regNumber;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getIsin() {
-            return isin;
-        }
     }
+
 
     @FXML
     private void handleAddStockButt() {
@@ -158,8 +109,15 @@ public class MenuFrameController {
                 System.out.println(response);
 
                 // Обработка полученного JSON
-//                StockDto stockDto = parseStockDto(response.toString());
-                // Дальнейшая обработка объекта stockDto...
+                Stocks stocks = parseJson(response.toString());
+
+                if (!tableContent.getItems().contains(stocks)) {
+                    stocksListTableItem.add(stocks);
+                    tableContent.getItems().setAll(stocksListTableItem);
+
+                } else {
+                    showAlert("Error", "Акция: \"" + stocks.getName() +"\", по запросу: " + searchValue + " уже есть в списке!" );
+                }
 
             } else {
                 System.out.println("Ошибка при выполнении запроса. Код ошибки: " + responseCode);
@@ -172,13 +130,43 @@ public class MenuFrameController {
         }
     }
 
-    private StockDto parseStockDto(String json) {
-        // Здесь нужно реализовать код для парсинга JSON и создания объекта StockDto
-        // Например, можно использовать библиотеку GSON: https://github.com/google/gson
-        return null;
+    public void showAlert(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    public void initialize() {
+        // Создание столбцов таблицы
+        TableColumn<Stocks, String> secIdColumn = new TableColumn<>("SEC ID");
+        secIdColumn.setCellValueFactory(new PropertyValueFactory<>("secId"));
+
+        TableColumn<Stocks, String> shortNameColumn = new TableColumn<>("Short Name");
+        shortNameColumn.setCellValueFactory(new PropertyValueFactory<>("shortname"));
+
+        TableColumn<Stocks, String> regNumberColumn = new TableColumn<>("Reg Number");
+        regNumberColumn.setCellValueFactory(new PropertyValueFactory<>("regNumber"));
+
+        TableColumn<Stocks, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Stocks, String> isinColumn = new TableColumn<>("ISIN");
+        isinColumn.setCellValueFactory(new PropertyValueFactory<>("isin"));
+
+
+        tableContent.getColumns().setAll(secIdColumn, shortNameColumn, regNumberColumn, nameColumn, isinColumn);
+    }
+
+
+    public Stocks parseJson(String response) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Stocks.class, new StocksAdapter())
+                .create();
+
+        return gson.fromJson(response, Stocks.class);
+
     }
 
 }
-
-
-
