@@ -1,27 +1,53 @@
 package stock.market.frontend.app.stockmarketfrontend.models;
 
-import com.google.gson.Gson;
-
 import java.util.Objects;
 
 
 public class Stocks {
-    private String secId;
-    private String shortname;
-    private String regNumber;
-    private String name;
-    private String isin;
+    public String secId;
+    public String shortname;
+    public String regNumber;
+    public String name;
+    public String isin;
+    public String emitEntTitle;
 
-
-    public Stocks() {
-    }
-
-    public Stocks(String secId, String shortname, String regNumber, String name, String isin) {
+    public Stocks(String secId, String shortname, String regNumber, String name, String isin, String emitEntTitle) {
         this.secId = secId;
         this.shortname = shortname;
         this.regNumber = regNumber;
         this.name = name;
         this.isin = isin;
+        this.emitEntTitle = emitEntTitle;
+    }
+
+    public Stocks() {
+    }
+
+//    public Stocks(String secId, String shortname, String regNumber, String name, String isin) {
+//        this.secId = secId;
+//        this.shortname = shortname;
+//        this.regNumber = regNumber;
+//        this.name = name;
+//        this.isin = isin;
+//    }
+
+    @Override
+    public String toString() {
+        return "Stocks{" +
+                "secId='" + secId + '\'' +
+                ", shortname='" + shortname + '\'' +
+                ", regNumber='" + regNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", isin='" + isin + '\'' +
+                '}';
+    }
+
+    public String getEmitEntTitle() {
+        return emitEntTitle;
+    }
+
+    public void setEmitEntTitle(String emitEntTitle) {
+        this.emitEntTitle = emitEntTitle;
     }
 
     public String getSecId() {

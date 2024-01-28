@@ -7,18 +7,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane id="mainFrame" fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="289.0" prefWidth="487.0" style="-fx-background-color: dedede;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stock.market.frontend.app.stockmarketfrontend.controller.LoginFrameController">
-   <Button id="loginButton" fx:id="loginButton" layoutX="245.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="32.0" prefWidth="179.0" text="Войти">
+<Pane id="mainFrame" fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" style="-fx-background-color: dedede;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stock.market.frontend.app.stockmarketfrontend.controller.LoginFrameController">
+   <Button id="loginButton" fx:id="loginButton" layoutX="65.0" layoutY="189.0" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="38.0" prefWidth="370.0" text="Войти">
       <font>
          <Font name="Roboto" size="17.0" />
       </font>
    </Button>
-   <Button id="exitButton" fx:id="exitButton" layoutX="245.0" layoutY="231.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="179.0" text="Выход">
+   <Button id="exitButton" fx:id="regButton" layoutX="65.0" layoutY="235.0" mnemonicParsing="false" onAction="#handleRegButton" prefHeight="38.0" prefWidth="370.0" text="Регистрация">
       <font>
          <Font name="Roboto" size="17.0" />
       </font>
    </Button>
-   <Pane id="mainFrameHeader" fx:id="maneFrameHeader" layoutX="-9.0" layoutY="-1.0" prefHeight="62.0" prefWidth="497.0" style="-fx-background-color: black; -fx-opacity: 70%;">
+   <Pane id="mainFrameHeader" fx:id="maneFrameHeader" layoutX="-9.0" layoutY="-1.0" prefHeight="62.0" prefWidth="513.0" style="-fx-background-color: black; -fx-opacity: 70%;">
       <children>
          <Text fx:id="headerText" fill="WHITE" layoutX="25.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Авторизация" wrappingWidth="235.2958984375">
             <font>
@@ -27,16 +27,16 @@
          </Text>
       </children>
    </Pane>
-   <Text id="loginText" fx:id="loginText" layoutX="86.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Логин:">
+   <Text id="loginText" fx:id="loginText" layoutX="71.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Логин:">
       <font>
          <Font name="Roboto" size="20.0" />
       </font>
    </Text>
-   <Text id="passwordText" fx:id="passwordText" layoutX="79.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Пароль:">
+   <Text id="passwordText" fx:id="passwordText" layoutX="65.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Пароль:">
       <font>
          <Font name="Roboto" size="20.0" />
       </font>
    </Text>
-   <PasswordField fx:id="passwordInput" layoutX="155.0" layoutY="142.0" prefHeight="32.0" prefWidth="269.0" />
-   <TextField fx:id="loginInput" layoutX="155.0" layoutY="96.0" prefHeight="32.0" prefWidth="269.0" />
+   <PasswordField fx:id="passwordInput" layoutX="142.0" layoutY="142.0" prefHeight="32.0" prefWidth="288.0" />
+   <TextField fx:id="loginInput" layoutX="142.0" layoutY="94.0" prefHeight="32.0" prefWidth="288.0" />
 </Pane>

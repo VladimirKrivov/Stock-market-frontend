@@ -4,6 +4,7 @@ module stock.market.frontend.app.stockmarketfrontend {
     requires com.google.gson;
 
     requires org.controlsfx.controls;
+    requires org.apache.logging.log4j;
 
     opens stock.market.frontend.app.stockmarketfrontend to javafx.fxml;
     exports stock.market.frontend.app.stockmarketfrontend;

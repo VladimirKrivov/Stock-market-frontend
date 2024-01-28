@@ -20,8 +20,8 @@ public class StockMarketApp extends Application {
 
 
 
-        Scene scene = new Scene(fxmlLoader.load(), 487, 289);
-        stage.setTitle("Stock Market App");
+        Scene scene = new Scene(fxmlLoader.load(), 500, 300);
+        stage.setTitle("Stock MarketFX");
         stage.setScene(scene);
         stage.show();
         stage.setResizable(false);

@@ -2,31 +2,43 @@ package stock.market.frontend.app.stockmarketfrontend.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import javafx.collections.FXCollections;
+import com.google.gson.reflect.TypeToken;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import stock.market.frontend.app.stockmarketfrontend.StockMarketApp;
 import stock.market.frontend.app.stockmarketfrontend.models.Stocks;
 import stock.market.frontend.app.stockmarketfrontend.service.StocksAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 public class MenuFrameController {
 
-    List<Stocks> stocksListTableItem = new ArrayList<>();
+    private static final Logger logger = LogManager.getLogger(MenuFrameController.class);
+    private String username;
+    private List<Stocks> stocksListTableItem = new ArrayList<>();
+
+
+    private static final String ADD_STOCK_IN_USER_URL = "http://localhost:8080/api/v1/stock/find?company=";
+    private static final String GET_ALL_STOCK_IN_USER = "http://localhost:8080/api/v1/stock/find/all?name=";
+    private static final String DELETE_STOCK_URL = "http://localhost:8080/api/v1/stock/find/delete?name=";
 
 
     @FXML
@@ -63,73 +75,140 @@ public class MenuFrameController {
     private TableView<Stocks> tableContent;
 
     @FXML
-    void ClickHistory(ActionEvent event) {
+    void ClickHistory(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("historyCalc.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load(), 1145, 675);
+        } catch (IOException e) {
+            logger.error("Frame failed to load");
+        }
+        HistoryFrameController historyFrameController = loader.getController();
 
+        Stage stage = new Stage();
+        stage.setTitle("История запросов");
+        stage.setScene(scene);
 
-        // Установка списка элементов для таблицы
+        stage.setResizable(false);
+        stage.show();
+
+//        menuController.initialize(authUserName);
+//
+//        // Закрываем главное окно
+//        Stage primaryStage = (Stage) loginButton.getScene().getWindow();
+//        primaryStage.close();
 
     }
 
     @FXML
     void deletCollumn(ActionEvent event) {
         // Получаем выбранную строку
-//        TableView<Stocks> tableView = (TableView<Stocks>) event.getSource();
         ObservableList<Stocks> selectedItems = tableContent.getSelectionModel().getSelectedItems();
 
-
-        // Удаляем выбранные строки
-        tableContent.getItems().removeAll(selectedItems);
-
-
+        deleteStockInUser(selectedItems.get(0).getSecId(), username);
+        getAllStock();
     }
-
 
     @FXML
     private void handleAddStockButt() {
         String searchValue = inputSearch.getText();
-        String url = "http://localhost:8080/api/v1/stock/find?name=" + searchValue;
+
+        HttpURLConnection connection = null;
+        try {
+            connection = addStockToUser(searchValue);
+        } catch (IOException e) {
+            logger.error("Ошибка при выполнении запроса. Добавление акции по имени: {}", searchValue);
+        }
+        connection.disconnect();
+    }
+
+    @FXML
+    void handleOpenCalcFrame(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("calcStock.fxml"));
+        Scene scene = new Scene(loader.load(), 1267, 802);
+        CalcFrameController calcFrameController = loader.getController();
+
+        Stage stage = new Stage();
+        stage.setTitle("Расчет доходности");
+        stage.setScene(scene);
+
+        calcFrameController.initialize(username);
+
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    @FXML
+    void handleAuthorButton(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("author.fxml"));
+        Scene scene = new Scene(loader.load(), 819, 563);
+        AuthorFrameController authorFrameController = loader.getController();
+
+        Stage stage = new Stage();
+        stage.setTitle("Справка");
+        stage.setScene(scene);
+
+        stage.setResizable(false);
+        stage.show();
+    }
+
+
+    //    Удалить акцию из списка
+    private void deleteStockInUser(String secid, String username) {
+        String url = DELETE_STOCK_URL + username + "&secid=" + secid;
 
         try {
             URL apiUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-            connection.setRequestMethod("GET");
+            connection.setRequestMethod("DELETE");
 
             int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_CREATED) {
-                // Чтение ответа от сервера
-                BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = responseReader.readLine()) != null) {
-                    response.append(line);
-                    System.out.println(response);
-                }
-                responseReader.close();
-
-                System.out.println(response);
-
-                // Обработка полученного JSON
-                Stocks stocks = parseJson(response.toString());
-
-                if (!tableContent.getItems().contains(stocks)) {
-                    stocksListTableItem.add(stocks);
-                    tableContent.getItems().setAll(stocksListTableItem);
-
-                } else {
-                    showAlert("Error", "Акция: \"" + stocks.getName() +"\", по запросу: " + searchValue + " уже есть в списке!" );
-                }
-
-            } else {
-                System.out.println("Ошибка при выполнении запроса. Код ошибки: " + responseCode);
-            }
-
-            connection.disconnect();
-
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Не удалось удалить Акцию: {} у пользователя: {}", secid, username);
         }
+
     }
 
+
+    // Добавить акцию в портфель пользователя
+    private HttpURLConnection addStockToUser(String searchValue) throws IOException {
+        String url = "http://localhost:8080/api/v1/stock/find?company=" + searchValue + "&name=" + username;
+
+        URL apiUrl = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_CREATED) {
+            // Чтение ответа от сервера
+            BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = responseReader.readLine()) != null) {
+                response.append(line);
+            }
+            responseReader.close();
+
+
+            // Обработка полученного JSON
+            Stocks stocks = parseJson(response.toString());
+
+            if (!tableContent.getItems().contains(stocks)) {
+                stocksListTableItem.add(stocks);
+                tableContent.getItems().setAll(stocksListTableItem);
+
+            } else {
+                showAlert("Error", "Акция: \"" + stocks.getName() + "\", по запросу: " + searchValue + " уже есть в списке!");
+            }
+
+        } else {
+            logger.error("Ошибка при выполнении запроса. Код ошибки: {}", responseCode);
+        }
+        return connection;
+
+    }
+
+    // Вызвать Alert
     public void showAlert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -138,7 +217,11 @@ public class MenuFrameController {
         alert.showAndWait();
     }
 
-    public void initialize() {
+    //    Метод инизиализации полей текущего окна
+    public void initialize(String userName) {
+        this.username = userName;
+        getAllStock();
+
         // Создание столбцов таблицы
         TableColumn<Stocks, String> secIdColumn = new TableColumn<>("SEC ID");
         secIdColumn.setCellValueFactory(new PropertyValueFactory<>("secId"));
@@ -159,7 +242,7 @@ public class MenuFrameController {
         tableContent.getColumns().setAll(secIdColumn, shortNameColumn, regNumberColumn, nameColumn, isinColumn);
     }
 
-
+    // Парсить Json Stock
     public Stocks parseJson(String response) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Stocks.class, new StocksAdapter())
@@ -167,6 +250,53 @@ public class MenuFrameController {
 
         return gson.fromJson(response, Stocks.class);
 
+    }
+// Парсить Json List Stock
+
+    public List<Stocks> parseResponseToList(String response) {
+        Gson gson = new Gson();
+        Type stocksListType = new TypeToken<List<Stocks>>() {
+        }.getType();
+        List<Stocks> stocksList = gson.fromJson(response, stocksListType);
+        return stocksList;
+    }
+
+
+    //    Получить List всех акций портфеля пользователя
+    public List<Stocks> getAllStock() {
+        String url = "http://localhost:8080/api/v1/stock/find/all?name=" + username;
+
+        try {
+            URL apiUrl = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+            connection.setRequestMethod("GET");
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Чтение ответа от сервера
+                BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = responseReader.readLine()) != null) {
+                    response.append(line);
+                }
+                responseReader.close();
+
+                // Обработка полученного JSON
+
+                stocksListTableItem = parseResponseToList(response.toString());
+                tableContent.getItems().setAll(stocksListTableItem);
+
+            } else {
+                logger.error("Ошибка при выполнении запроса. Код ошибки: {}", responseCode);
+            }
+
+            connection.disconnect();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
