@@ -130,7 +130,6 @@ public class CalcFrameController {
         Gson gson = new Gson();
         String json = gson.toJson(responseToCalcDto);
 
-        System.out.println(json);
 
         URL url = new URL("http://localhost:8080/api/v1/calc/stocks");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -152,11 +151,7 @@ public class CalcFrameController {
             }
 
             String get = String.valueOf(response);
-            System.out.println("Полученный ответ");
-            System.out.println(get);
             HistoryDto historyDto = gson.fromJson(response.toString(), HistoryDto.class);
-            System.out.println("Распарсенный ответ");
-            System.out.println(historyDto);
 
             historyDtoLocale = historyDto;
 

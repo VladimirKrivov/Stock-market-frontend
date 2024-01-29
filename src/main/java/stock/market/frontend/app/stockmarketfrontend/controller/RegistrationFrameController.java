@@ -96,8 +96,6 @@ public class RegistrationFrameController {
     private void register(String login, String password) throws Exception {
         HttpURLConnection connection = getHttpURLConnection(login, password);
 
-        System.out.println("Response code:");
-        System.out.println(connection.getResponseCode());
         String res = String.valueOf(connection.getResponseCode());
 
         if (res.equals("200")) {

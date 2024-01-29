@@ -136,8 +136,6 @@ public class LoginFrameController {
     private ShortUserDto login(String login, String password) throws Exception {
         HttpURLConnection connection = getHttpURLConnection(login, password);
 
-        System.out.println("Response code:");
-        System.out.println(connection.getResponseCode());
         String res = String.valueOf(connection.getResponseCode());
 
         if (res.equals("200")) {
@@ -159,8 +157,6 @@ public class LoginFrameController {
             name = name.replace("{\"name\":\"", "");
             name = name.replace("\"}", "");
 
-            System.out.println("names:");
-            System.out.println(name);
             connection.disconnect();
 
             return new ShortUserDto(name);

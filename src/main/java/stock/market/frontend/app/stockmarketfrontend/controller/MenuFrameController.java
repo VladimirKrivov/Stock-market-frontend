@@ -166,7 +166,6 @@ public class MenuFrameController {
     private void deleteStockInUser(String secid, String username) {
         String url = DELETE_STOCK_URL + username + "&secid=" + secid;
 
-        System.out.println("Чему равен secId " + secid);
 
 
         try {
