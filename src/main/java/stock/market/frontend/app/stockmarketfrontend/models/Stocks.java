@@ -23,14 +23,6 @@ public class Stocks {
     public Stocks() {
     }
 
-//    public Stocks(String secId, String shortname, String regNumber, String name, String isin) {
-//        this.secId = secId;
-//        this.shortname = shortname;
-//        this.regNumber = regNumber;
-//        this.name = name;
-//        this.isin = isin;
-//    }
-
     @Override
     public String toString() {
         return "Stocks{" +

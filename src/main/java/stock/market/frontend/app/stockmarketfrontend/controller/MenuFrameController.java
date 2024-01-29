@@ -152,7 +152,6 @@ public class MenuFrameController {
     void handleAuthorButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("author.fxml"));
         Scene scene = new Scene(loader.load(), 819, 563);
-//        AuthorFrameController authorFrameController = loader.getController();
 
         Stage stage = new Stage();
         stage.setTitle("Справка");

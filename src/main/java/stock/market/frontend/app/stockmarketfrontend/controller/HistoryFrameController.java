@@ -35,9 +35,6 @@ public class HistoryFrameController {
     private List<HistoryDto> historyDtoLocal = new ArrayList<>();
     private HistoryDto selectDto = null;
 
-//    @FXML
-//    private Button deleteSelectHistory;
-
     @FXML
     private TableView<HistoryDto> historyTable;
 

@@ -138,10 +138,6 @@ public class CalcFrameController {
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", "application/json");
 
-//        if (connection.getResponseCode() == 500) {
-//            showAlert("Ошибка", "Не удалось выполнить расчет по выбранным акция");
-//        }
-
         try (OutputStream outputStream = connection.getOutputStream()) {
             byte[] input = json.getBytes("utf-8");
             outputStream.write(input, 0, input.length);
