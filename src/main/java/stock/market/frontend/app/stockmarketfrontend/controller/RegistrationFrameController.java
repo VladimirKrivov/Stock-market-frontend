@@ -8,6 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import stock.market.frontend.app.stockmarketfrontend.models.UserDto;
@@ -101,6 +102,8 @@ public class RegistrationFrameController {
 
         if (res.equals("200")) {
             showAlert("Успешная регистрация", "Регистрация прошла успешно");
+            Stage stage = (Stage) registerButton.getScene().getWindow();
+            stage.close();
         } else if (res.equals("409")) {
             showAlert("Регистрация не удалась", "Пользователь с таким именем уже существует!");
         } else {

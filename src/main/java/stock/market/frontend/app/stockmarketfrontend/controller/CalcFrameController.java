@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import stock.market.frontend.app.stockmarketfrontend.models.HistoryDto;
@@ -75,6 +76,15 @@ public class CalcFrameController {
 
     @FXML
     private Text tills;
+
+    @FXML
+    private Button closeBut;
+
+    @FXML
+    void handleCloseBut(ActionEvent event) {
+        Stage stage = (Stage) closeBut.getScene().getWindow();
+        stage.close();
+    }
 
     @FXML
     void handleAddToCalcBut(ActionEvent event) {
