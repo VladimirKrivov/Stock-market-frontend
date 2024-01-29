@@ -2,6 +2,7 @@ package stock.market.frontend.app.stockmarketfrontend.controller;
 
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import stock.market.frontend.app.stockmarketfrontend.models.HistoryDto;
+import stock.market.frontend.app.stockmarketfrontend.models.HistoryElemDto;
 import stock.market.frontend.app.stockmarketfrontend.models.ResponseToCalcDto;
 import stock.market.frontend.app.stockmarketfrontend.models.Stocks;
 
@@ -19,12 +21,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static stock.market.frontend.app.stockmarketfrontend.service.test.parseResponseToList;
 
 public class CalcFrameController {
     private static final Logger logger = LogManager.getLogger(CalcFrameController.class);
@@ -32,7 +34,7 @@ public class CalcFrameController {
     private String username;
     private List<Stocks> stocksListTableItemCalc = new ArrayList<>();
     private List<Stocks> stockCalItems = new ArrayList<>();
-    private HistoryDto historyDtoLocale;
+    private HistoryDto historyDtoLocale = new HistoryDto();
 
     @FXML
     private Button addToCalcBut;
@@ -41,7 +43,7 @@ public class CalcFrameController {
     private Button calcButt;
 
     @FXML
-    private TableView<?> calcincResultTable;
+    private TableView<HistoryElemDto> calcincResultTable;
 
     @FXML
     private Text daysText;
@@ -56,9 +58,6 @@ public class CalcFrameController {
     private Pane mainFrame;
 
     @FXML
-    private Button openMenuBut;
-
-    @FXML
     private Button removeToCalcBut;
 
     @FXML
@@ -69,6 +68,13 @@ public class CalcFrameController {
 
     @FXML
     private TableView<Stocks> stocksInTable;
+
+
+    @FXML
+    private Text froms;
+
+    @FXML
+    private Text tills;
 
     @FXML
     void handleAddToCalcBut(ActionEvent event) {
@@ -87,6 +93,7 @@ public class CalcFrameController {
             try {
                 calculatingStockDate(from, till);
             } catch (IOException e) {
+                showAlert("Ошибка", "Не удалось выполнить расчет по выбранным акция");
                 logger.error("Ошибка при обработке запроса расчета темпа роста акций!!");
                 e.printStackTrace();
             }
@@ -115,16 +122,15 @@ public class CalcFrameController {
 
         System.out.println(json);
 
-
-        // Отправляем POST-запрос
-//        String url = "http://localhost:8080/api/v1/calc/stocks"; // Замените на ваш URL
-
-
         URL url = new URL("http://localhost:8080/api/v1/calc/stocks");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", "application/json");
+
+//        if (connection.getResponseCode() == 500) {
+//            showAlert("Ошибка", "Не удалось выполнить расчет по выбранным акция");
+//        }
 
         try (OutputStream outputStream = connection.getOutputStream()) {
             byte[] input = json.getBytes("utf-8");
@@ -147,6 +153,15 @@ public class CalcFrameController {
             System.out.println(historyDto);
 
             historyDtoLocale = historyDto;
+
+
+            calcincResultTable.getItems().setAll(historyDtoLocale.getHistoryElemDto());
+
+            froms.setText(historyDtoLocale.getFrom());
+            tills.setText(historyDtoLocale.getTill());
+            daysText.setText(String.valueOf(historyDtoLocale.getDaysCalendar()));
+            resultFieldText.setText(historyDtoLocale.getResult());
+
 
         }
     }
@@ -223,8 +238,10 @@ public class CalcFrameController {
         inputDateTill.setText("2024-01-25");
         createColumnA();
         createColumnB();
+        createColumnC();
         getAllStock();
     }
+
 
     private void getAllStock() {
         String url = GET_ALL_STOCK_IN_USER + username;
@@ -261,6 +278,15 @@ public class CalcFrameController {
         }
     }
 
+    // Распарсить Json в List Stocks
+    public static List<Stocks> parseResponseToList(String response) {
+        Gson gson = new Gson();
+        Type stocksListType = new TypeToken<List<Stocks>>() {
+        }.getType();
+        List<Stocks> stocksList = gson.fromJson(response, stocksListType);
+        return stocksList;
+    }
+
     public void showAlert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -286,6 +312,19 @@ public class CalcFrameController {
         TableColumn<Stocks, String> shortNameColumn = new TableColumn<>("Short Name");
         shortNameColumn.setCellValueFactory(new PropertyValueFactory<>("shortname"));
         stocksInTable.getColumns().setAll(secIdColumn, shortNameColumn);
+    }
+
+    private void createColumnC() {
+        TableColumn<HistoryElemDto, String> secIdColumn = new TableColumn<>("Date");
+        secIdColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        TableColumn<HistoryElemDto, String> shortNameColumn = new TableColumn<>("Short Name");
+        shortNameColumn.setCellValueFactory(new PropertyValueFactory<>("shortName"));
+
+        TableColumn<HistoryElemDto, String> growthColumn = new TableColumn<>("Growth");
+        growthColumn.setCellValueFactory(new PropertyValueFactory<>("growth"));
+
+        calcincResultTable.getColumns().setAll(secIdColumn, shortNameColumn, growthColumn);
     }
 
 

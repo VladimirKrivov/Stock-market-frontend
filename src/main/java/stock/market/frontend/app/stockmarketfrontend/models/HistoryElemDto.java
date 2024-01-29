@@ -8,6 +8,7 @@ public class HistoryElemDto {
     public String shortName;
     public String growth;
 
+
     public HistoryElemDto() {
     }
 

@@ -3,6 +3,7 @@ package stock.market.frontend.app.stockmarketfrontend.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +31,8 @@ import java.util.List;
 
 
 public class MenuFrameController {
+
+    // Контроллер главного меню в котором производится добавляение акции в портфель пользователя
 
     private static final Logger logger = LogManager.getLogger(MenuFrameController.class);
     private String username;
@@ -75,11 +78,17 @@ public class MenuFrameController {
     private TableView<Stocks> tableContent;
 
     @FXML
+    void handleExit(ActionEvent event) {
+        Platform.exit();
+    }
+
+    // Открыть окно истории запросов
+    @FXML
     void ClickHistory(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("historyCalc.fxml"));
         Scene scene = null;
         try {
-            scene = new Scene(loader.load(), 1145, 675);
+            scene = new Scene(loader.load(), 790, 576);
         } catch (IOException e) {
             logger.error("Frame failed to load");
         }
@@ -92,14 +101,11 @@ public class MenuFrameController {
         stage.setResizable(false);
         stage.show();
 
-//        menuController.initialize(authUserName);
-//
-//        // Закрываем главное окно
-//        Stage primaryStage = (Stage) loginButton.getScene().getWindow();
-//        primaryStage.close();
+        historyFrameController.initialize(username);
 
     }
 
+    // Удаляем акцию из портфеля пользователя
     @FXML
     void deletCollumn(ActionEvent event) {
         // Получаем выбранную строку
@@ -109,9 +115,11 @@ public class MenuFrameController {
         getAllStock();
     }
 
+    // Добавить акцию в портфель пользователя
     @FXML
     private void handleAddStockButt() {
         String searchValue = inputSearch.getText();
+        inputSearch.setText("");
 
         HttpURLConnection connection = null;
         try {
@@ -122,6 +130,7 @@ public class MenuFrameController {
         connection.disconnect();
     }
 
+    // Открыть окно в котором производится расчет акций
     @FXML
     void handleOpenCalcFrame(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("calcStock.fxml"));
@@ -138,11 +147,12 @@ public class MenuFrameController {
         stage.show();
     }
 
+    // Открыть окно справка/автор
     @FXML
     void handleAuthorButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("author.fxml"));
         Scene scene = new Scene(loader.load(), 819, 563);
-        AuthorFrameController authorFrameController = loader.getController();
+//        AuthorFrameController authorFrameController = loader.getController();
 
         Stage stage = new Stage();
         stage.setTitle("Справка");
@@ -156,6 +166,9 @@ public class MenuFrameController {
     //    Удалить акцию из списка
     private void deleteStockInUser(String secid, String username) {
         String url = DELETE_STOCK_URL + username + "&secid=" + secid;
+
+        System.out.println("Чему равен secId " + secid);
+
 
         try {
             URL apiUrl = new URL(url);

@@ -26,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class LoginFrameController {
+    // Контроллер окна авторизации
     private static final String LOGIN_URL = "http://localhost:8080/api/v1/auth/login";
     private static final Logger logger = LogManager.getLogger(LoginFrameController.class);
 
@@ -59,14 +60,13 @@ public class LoginFrameController {
     @FXML
     private Text passwordText;
 
+    // Метод обработки нажатия на кнопку авторизации
     @FXML
     private void handleLoginButton(ActionEvent event) {
 
         ShortUserDto userDto = null;
         try {
-            userDto = login("John", "12346");
-//            userDto = login(loginInput.getText(), passwordInput.getText());
-            assert userDto != null;
+            userDto = login(loginInput.getText(), passwordInput.getText());
             authUserName = userDto.getName();
 
 
@@ -82,6 +82,7 @@ public class LoginFrameController {
 
     }
 
+    // Метод открытия основной формы приложения
     private void openMenuFrame() {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("menu.fxml"));
         Scene scene = null;
@@ -106,6 +107,7 @@ public class LoginFrameController {
         primaryStage.close();
     }
 
+    // Действие при нажатии кнопки регистрации
     @FXML
     void handleRegButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("register-menu.fxml"));
@@ -119,9 +121,9 @@ public class LoginFrameController {
         stage.setResizable(false);
         stage.show();
 
-//        registrationFrameController.initialize();
     }
 
+    // Показать Алерт
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -130,6 +132,7 @@ public class LoginFrameController {
         alert.showAndWait();
     }
 
+    // Метод обраюотки авторизации
     private ShortUserDto login(String login, String password) throws Exception {
         HttpURLConnection connection = getHttpURLConnection(login, password);
 
@@ -165,6 +168,7 @@ public class LoginFrameController {
 
     }
 
+    // Метод отправки запроса авторизации к сервера
     private static HttpURLConnection getHttpURLConnection(String login, String password) throws IOException {
         UserDto userDto = new UserDto(login, password);
         URL url = new URL(LOGIN_URL);

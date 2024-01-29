@@ -18,8 +18,6 @@ public class StockMarketApp extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(StockMarketApp.class.getResource("login-menu.fxml"));
 
-
-
         Scene scene = new Scene(fxmlLoader.load(), 500, 300);
         stage.setTitle("Stock MarketFX");
         stage.setScene(scene);

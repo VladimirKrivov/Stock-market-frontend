@@ -1,6 +1,7 @@
 package stock.market.frontend.app.stockmarketfrontend.models;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class HistoryDto {
@@ -9,20 +10,23 @@ public class HistoryDto {
     public String from;
     public String till;
     public String create;
+    public Integer daysCalendar;
 
     public String result;
 
     public List<HistoryElemDto> historyElemDto;
 
 
+
     public HistoryDto() {
     }
 
-    public HistoryDto(String userName, String from, String till, String create, String result, List<HistoryElemDto> historyElemDto) {
+    public HistoryDto(String userName, String from, String till, String create, Integer daysCalendar, String result, List<HistoryElemDto> historyElemDto) {
         this.userName = userName;
         this.from = from;
         this.till = till;
         this.create = create;
+        this.daysCalendar = daysCalendar;
         this.result = result;
         this.historyElemDto = historyElemDto;
     }
@@ -37,6 +41,27 @@ public class HistoryDto {
                 ", result='" + result + '\'' +
                 ", historyElemDto=" + historyElemDto +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HistoryDto that = (HistoryDto) o;
+        return Objects.equals(userName, that.userName) && Objects.equals(from, that.from) && Objects.equals(till, that.till) && Objects.equals(create, that.create) && Objects.equals(daysCalendar, that.daysCalendar) && Objects.equals(result, that.result) && Objects.equals(historyElemDto, that.historyElemDto);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userName, from, till, create, daysCalendar, result, historyElemDto);
+    }
+
+    public Integer getDaysCalendar() {
+        return daysCalendar;
+    }
+
+    public void setDaysCalendar(Integer daysCalendar) {
+        this.daysCalendar = daysCalendar;
     }
 
     public String getUserName() {

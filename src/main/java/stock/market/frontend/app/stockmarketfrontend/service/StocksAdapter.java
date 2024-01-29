@@ -10,6 +10,7 @@ import java.io.IOException;
 
 public class StocksAdapter extends TypeAdapter<Stocks> {
 
+    // Адаптер необходимый для работы Gson с приватными полями Stocks
     @Override
     public void write(JsonWriter out, Stocks stocks) throws IOException {
         // Не требуется реализация, так как не нужно сериализовать объекты в JSON

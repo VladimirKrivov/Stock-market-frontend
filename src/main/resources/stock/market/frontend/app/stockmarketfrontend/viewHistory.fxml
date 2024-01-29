@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane id="mainFrame" fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="892.0" style="-fx-background-color: dedede;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stock.market.frontend.app.stockmarketfrontend.controller.ViewHistoryFrameController">
+   <children>
+      <Pane prefHeight="77.0" prefWidth="892.0" style="-fx-background-color: #403f3f;">
+         <children>
+            <Text fill="WHITE" layoutX="14.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Просмотр запроса" wrappingWidth="276.2958984375">
+               <font>
+                  <Font name="Roboto" size="29.0" />
+               </font>
+            </Text>
+         </children></Pane>
+      <Text layoutX="27.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Результат расчета:" wrappingWidth="191.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <TableView fx:id="viewCalcincResultTable" layoutX="27.0" layoutY="135.0" prefHeight="350.0" prefWidth="613.0">
+         <columns>
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="75.0" text="C2" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <Text layoutX="27.0" layoutY="527.0" strokeType="OUTSIDE" strokeWidth="0.0" text="За" wrappingWidth="33.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="daysText" layoutX="68.0" layoutY="527.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00" wrappingWidth="33.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="114.0" layoutY="527.0" strokeType="OUTSIDE" strokeWidth="0.0" text="календарных дней коэффициент составил:" wrappingWidth="444.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="resultFieldText" layoutX="566.0" layoutY="527.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0000,00" wrappingWidth="135.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="froms" layoutX="653.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="гггг-мм-дд" wrappingWidth="135.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="1055.0" layoutY="657.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="10.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="tills" layoutX="655.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="гггг-мм-дд" wrappingWidth="135.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="655.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Расчетный период:" wrappingWidth="201.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="699.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="10.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>

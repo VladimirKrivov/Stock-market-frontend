@@ -21,7 +21,7 @@
                   <Font name="Roboto" size="17.0" />
                </font>
             </Button>
-            <Button id="exitButton" fx:id="exitButton" layoutX="31.0" layoutY="610.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="143.0" text="Выход">
+            <Button id="exitButton" fx:id="exitButton" layoutX="31.0" layoutY="610.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="41.0" prefWidth="143.0" text="Выход">
                <font>
                   <Font name="Roboto" size="17.0" />
                </font>

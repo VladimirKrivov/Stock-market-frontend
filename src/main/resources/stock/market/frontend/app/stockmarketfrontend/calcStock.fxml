@@ -17,11 +17,6 @@
                   <Font name="Roboto" size="29.0" />
                </font>
             </Text>
-            <Button id="exitButton" fx:id="openMenuBut" layoutX="90.0" layoutY="732.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="177.0" text="Вернуться в меню">
-               <font>
-                  <Font name="Roboto" size="17.0" />
-               </font>
-            </Button>
             <Button id="loginButton" fx:id="calcButt" layoutX="22.0" layoutY="391.0" mnemonicParsing="false" onAction="#handleCalcBut" prefHeight="41.0" prefWidth="314.0" text="Расчитать">
                <font>
                   <Font name="Roboto" size="17.0" />
@@ -90,16 +85,19 @@
             <Font size="22.0" />
          </font>
       </Text>
-      <Text layoutX="374.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Результат расчета:" wrappingWidth="259.2958984375">
+      <Text layoutX="374.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Результат расчета:" wrappingWidth="191.2958984375">
          <font>
             <Font size="22.0" />
          </font>
       </Text>
-      <TableView fx:id="calcincResultTable" layoutX="374.0" layoutY="347.0" prefHeight="350.0" prefWidth="870.0">
+      <TableView fx:id="calcincResultTable" layoutX="374.0" layoutY="347.0" prefHeight="350.0" prefWidth="613.0">
          <columns>
             <TableColumn prefWidth="75.0" text="C1" />
             <TableColumn prefWidth="75.0" text="C2" />
          </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Text layoutX="374.0" layoutY="744.0" strokeType="OUTSIDE" strokeWidth="0.0" text="За" wrappingWidth="33.2958984375">
          <font>
@@ -111,12 +109,32 @@
             <Font size="22.0" />
          </font>
       </Text>
-      <Text layoutX="461.0" layoutY="744.0" strokeType="OUTSIDE" strokeWidth="0.0" text="календарных дней коэффициент составил:" wrappingWidth="444.2958984375">
+      <Text layoutX="461.0" layoutY="742.0" strokeType="OUTSIDE" strokeWidth="0.0" text="календарных дней коэффициент составил:" wrappingWidth="444.2958984375">
          <font>
             <Font size="22.0" />
          </font>
       </Text>
-      <Text fx:id="resultFieldText" layoutX="917.0" layoutY="744.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0000,00" wrappingWidth="201.2958984375">
+      <Text fx:id="resultFieldText" layoutX="917.0" layoutY="742.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0000,00" wrappingWidth="201.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="froms" layoutX="1003.0" layoutY="625.0" strokeType="OUTSIDE" strokeWidth="0.0" text="гггг-мм-дд" wrappingWidth="135.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="1055.0" layoutY="657.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="10.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="tills" layoutX="1005.0" layoutY="689.0" strokeType="OUTSIDE" strokeWidth="0.0" text="гггг-мм-дд" wrappingWidth="135.2958984375">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="1005.0" layoutY="566.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Расчетный период:" wrappingWidth="201.2958984375">
          <font>
             <Font size="22.0" />
          </font>
