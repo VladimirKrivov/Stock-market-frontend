@@ -111,7 +111,7 @@ public class LoginFrameController {
     @FXML
     void handleRegButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("register-menu.fxml"));
-        Scene scene = new Scene(loader.load(), 500, 400);
+        Scene scene = new Scene(loader.load(), 500, 350);
         RegistrationFrameController registrationFrameController = loader.getController();
 
         Stage stage = new Stage();

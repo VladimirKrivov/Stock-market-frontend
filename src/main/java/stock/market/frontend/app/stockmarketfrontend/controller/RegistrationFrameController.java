@@ -43,9 +43,6 @@ public class RegistrationFrameController {
     private Pane maneFrameHeader;
 
     @FXML
-    private Button openLoginFrame;
-
-    @FXML
     private PasswordField passwordInput;
 
     @FXML
@@ -57,10 +54,6 @@ public class RegistrationFrameController {
     @FXML
     private Button registerButton;
 
-    @FXML
-    void handleOpenLoginFrame(ActionEvent event) {
-
-    }
 
     // Действие при нажатии кнопки регистрации
     @FXML

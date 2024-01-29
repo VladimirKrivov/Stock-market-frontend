@@ -7,13 +7,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane id="mainFrame" fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: dedede;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stock.market.frontend.app.stockmarketfrontend.controller.RegistrationFrameController">
+<Pane id="mainFrame" fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="500.0" style="-fx-background-color: dedede;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stock.market.frontend.app.stockmarketfrontend.controller.RegistrationFrameController">
    <Button id="loginButton" fx:id="registerButton" layoutX="65.0" layoutY="299.0" mnemonicParsing="false" onAction="#handleRegisterButton" prefHeight="38.0" prefWidth="370.0" text="Зарегистрироваться">
-      <font>
-         <Font name="Roboto" size="17.0" />
-      </font>
-   </Button>
-   <Button id="exitButton" fx:id="openLoginFrame" layoutX="65.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleOpenLoginFrame" prefHeight="38.0" prefWidth="370.0" text="Авторизация">
       <font>
          <Font name="Roboto" size="17.0" />
       </font>
