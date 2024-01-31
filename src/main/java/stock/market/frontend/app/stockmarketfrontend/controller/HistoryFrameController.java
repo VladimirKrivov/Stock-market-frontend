@@ -13,11 +13,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import stock.market.frontend.app.stockmarketfrontend.StockMarketApp;
 import stock.market.frontend.app.stockmarketfrontend.models.HistoryDto;
-import stock.market.frontend.app.stockmarketfrontend.models.Stocks;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,9 +25,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Контроллер окна "История запросов"
+ */
 public class HistoryFrameController {
 
-    private static final Logger logger = LogManager.getLogger(HistoryFrameController.class);
+    private final String GET_HISTORY_URL = "http://localhost:8080/api/v1/calc/stocks/history/";
     private String username;
     private List<HistoryDto> historyDtoLocal = new ArrayList<>();
     private HistoryDto selectDto = null;
@@ -55,6 +55,9 @@ public class HistoryFrameController {
         openSelectHistory();
     }
 
+    /**
+     * Метод отслеживает выбранную колонку в таблице и открывает окно "Просмотр истории"
+     */
     private void openSelectHistory() {
         ObservableList<HistoryDto> selectedItems = historyTable.getSelectionModel().getSelectedItems();
 
@@ -67,7 +70,10 @@ public class HistoryFrameController {
 
     }
 
-    // открыть форму просмотра конкретного выбранного запроса
+    /**
+     * Открыть форму просмотра конкретного выбранного запроса
+     * @param selectDto - dto запроса выделенного в таблице
+     */
     private void openViewHistoryFrom(HistoryDto selectDto) {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("viewHistory.fxml"));
         Scene scene = null;
@@ -88,8 +94,10 @@ public class HistoryFrameController {
         stage.show();
     }
 
-
-    // Метод инициализации. Запускается во время открытия текущей формы
+    /**
+     * Метод инициализации окна "История запросов". Задействуется во время запуска окна
+     * @param userName имя пользователя текущей сессии
+     */
     public void initialize(String userName) {
         this.username = userName;
 
@@ -124,16 +132,20 @@ public class HistoryFrameController {
         addHistoryToTable();
     }
 
-    // Заполнить таблицу данными
+    /**
+     * Метод с помощью которого заполняется таблица запросов данными
+     */
     private void addHistoryToTable() {
         historyTable.getItems().setAll(historyDtoLocal);
     }
 
-
-
-    // сделать запрос к серверному приложению и получить данные
+    /**
+     * Метод с помощью которого производится запрос на сервер для получения списка истории запросов
+     * @return List<HistoryDto> список истории запросов
+     * @throws IOException пробрасывается исключение
+     */
     private List<HistoryDto> getHistoryStocks() throws IOException {
-        String url = "http://localhost:8080/api/v1/calc/stocks/history/" + username;
+        String url = GET_HISTORY_URL + username;
         HttpURLConnection connection = null;
         BufferedReader reader = null;
 

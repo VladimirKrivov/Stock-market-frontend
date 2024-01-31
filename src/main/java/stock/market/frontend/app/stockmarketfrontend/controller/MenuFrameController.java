@@ -30,9 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Контроллер главного меню приложения
+ */
 public class MenuFrameController {
-
-    // Контроллер главного меню в котором производится добавляение акции в портфель пользователя
 
     private static final Logger logger = LogManager.getLogger(MenuFrameController.class);
     private String username;
@@ -82,7 +83,9 @@ public class MenuFrameController {
         Platform.exit();
     }
 
-    // Открыть окно истории запросов
+    /**
+     * Метод запуска формы "История запросов"
+     */
     @FXML
     void ClickHistory(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("historyCalc.fxml"));
@@ -105,7 +108,9 @@ public class MenuFrameController {
 
     }
 
-    // Удаляем акцию из портфеля пользователя
+    /**
+     * Удалить акцию из портфеля пользователя. Действие при нажатии кнопки.
+     */
     @FXML
     void deletCollumn(ActionEvent event) {
         // Получаем выбранную строку
@@ -115,7 +120,9 @@ public class MenuFrameController {
         getAllStock();
     }
 
-    // Добавить акцию в портфель пользователя
+    /**
+     * Добавить акцию в портфель пользователя. Действие при нажатии кнопки.
+     */
     @FXML
     private void handleAddStockButt() {
         String searchValue = inputSearch.getText();
@@ -130,7 +137,9 @@ public class MenuFrameController {
         connection.disconnect();
     }
 
-    // Открыть окно в котором производится расчет акций
+    /**
+     * Открыть окно расчета акций. Действие при нажатии кнопки.
+     */
     @FXML
     void handleOpenCalcFrame(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("calcStock.fxml"));
@@ -147,7 +156,9 @@ public class MenuFrameController {
         stage.show();
     }
 
-    // Открыть окно справка/автор
+    /**
+     * Открыть окно "Справка". Действие при нажатии кнопки.
+     */
     @FXML
     void handleAuthorButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("author.fxml"));
@@ -162,12 +173,13 @@ public class MenuFrameController {
     }
 
 
-    //    Удалить акцию из списка
+    /**
+     * Запрос на удаление акции из портфеля пользователя к серверу
+     * @param secid - sec id акции
+     * @param username - имя пользователя
+     */
     private void deleteStockInUser(String secid, String username) {
         String url = DELETE_STOCK_URL + username + "&secid=" + secid;
-
-
-
         try {
             URL apiUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -181,9 +193,13 @@ public class MenuFrameController {
     }
 
 
-    // Добавить акцию в портфель пользователя
+    /**
+     * Запрос на добавление акции в портфель пользователя
+     * @param searchValue значение по которому производится поиск нужной акции
+     * @return HttpURLConnection connection соединения
+     */
     private HttpURLConnection addStockToUser(String searchValue) throws IOException {
-        String url = "http://localhost:8080/api/v1/stock/find?company=" + searchValue + "&name=" + username;
+        String url = ADD_STOCK_IN_USER_URL + searchValue + "&name=" + username;
 
         URL apiUrl = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
@@ -219,7 +235,11 @@ public class MenuFrameController {
 
     }
 
-    // Вызвать Alert
+    /**
+     * Отобразить alert
+     * @param title заголовок окна
+     * @param text текст окна
+     */
     public void showAlert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -228,7 +248,10 @@ public class MenuFrameController {
         alert.showAndWait();
     }
 
-    //    Метод инизиализации полей текущего окна
+    /**
+     * Метод инициализации окна "История запросов". Задействуется во время запуска окна
+     * @param userName имя пользователя текущей сессии
+     */
     public void initialize(String userName) {
         this.username = userName;
         getAllStock();
@@ -253,7 +276,11 @@ public class MenuFrameController {
         tableContent.getColumns().setAll(secIdColumn, shortNameColumn, regNumberColumn, nameColumn, isinColumn);
     }
 
-    // Парсить Json Stock
+    /**
+     * Метод с помощью которого json в виде строки преобразуется в Stocks
+     * @param response json в виде строки
+     * @return Stocks объект преобразованный из json
+     */
     public Stocks parseJson(String response) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Stocks.class, new StocksAdapter())
@@ -262,8 +289,12 @@ public class MenuFrameController {
         return gson.fromJson(response, Stocks.class);
 
     }
-// Парсить Json List Stock
 
+    /**
+     * Метод с помощью которого json в виде строки преобразуется в список Stocks
+     * @param response json в виде строки
+     * @return List<Stocks> список объектов преобразованных из json
+     */
     public List<Stocks> parseResponseToList(String response) {
         Gson gson = new Gson();
         Type stocksListType = new TypeToken<List<Stocks>>() {
@@ -274,8 +305,13 @@ public class MenuFrameController {
 
 
     //    Получить List всех акций портфеля пользователя
+
+    /**
+     * Сделать запрос на сервер и получить список всех акций в портфеле пльзователя
+     * @return List<Stocks> - список акций портфеля пользователя
+     */
     public List<Stocks> getAllStock() {
-        String url = "http://localhost:8080/api/v1/stock/find/all?name=" + username;
+        String url = GET_ALL_STOCK_IN_USER + username;
 
         try {
             URL apiUrl = new URL(url);

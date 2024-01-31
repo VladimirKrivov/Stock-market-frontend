@@ -28,7 +28,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Контроллер окна "Расчет доходности"
+ */
 public class CalcFrameController {
     private static final Logger logger = LogManager.getLogger(CalcFrameController.class);
     private static final String GET_ALL_STOCK_IN_USER = "http://localhost:8080/api/v1/stock/find/all?name=";
@@ -80,6 +82,7 @@ public class CalcFrameController {
     @FXML
     private Button closeBut;
 
+
     @FXML
     void handleCloseBut(ActionEvent event) {
         Stage stage = (Stage) closeBut.getScene().getWindow();
@@ -89,6 +92,22 @@ public class CalcFrameController {
     @FXML
     void handleAddToCalcBut(ActionEvent event) {
         addToCalcStock();
+    }
+
+
+    @FXML
+    void handleInputDateFrom(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handleInputDateTill(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handleRemoveToCalcBut(ActionEvent event) {
+        removeStockInTableCalc();
     }
 
     @FXML
@@ -107,13 +126,16 @@ public class CalcFrameController {
                 logger.error("Ошибка при обработке запроса расчета темпа роста акций!!");
                 e.printStackTrace();
             }
-
-
         }
-
-
     }
 
+    /**
+     * Метод необходимый для сбора информации для расчета, отправки запроса на сервер, обработки ответа и заполнения
+     * таблицы данными
+     * @param from начала периода
+     * @param till конец периода
+     * @throws IOException пробросить исключение
+     */
     private void calculatingStockDate(String from, String till) throws IOException {
         ResponseToCalcDto responseToCalcDto = new ResponseToCalcDto();
 
@@ -167,22 +189,10 @@ public class CalcFrameController {
         }
     }
 
-
-    @FXML
-    void handleInputDateFrom(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleInputDateTill(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleRemoveToCalcBut(ActionEvent event) {
-        removeStockInTableCalc();
-    }
-
+    /**
+     * Метод с помощью которого осуществляется перемещение из таблицы "Список акций к расчету" в таблицу
+     * "Список акций доступных к расчету"
+     */
     private void removeStockInTableCalc() {
         // Получаем выбранную строку
         ObservableList<Stocks> selectedItems = stocksInCalcTable.getSelectionModel().getSelectedItems();
@@ -207,6 +217,10 @@ public class CalcFrameController {
         stocksInCalcTable.getItems().setAll(stockCalItems);
     }
 
+    /**
+     * Метод с помощью которого осуществляется перемещение из таблицы "Список акций доступных к расчету"
+     * в таблицу "Список акций к расчету"
+     */
     private void addToCalcStock() {
         // Получаем выбранную строку
         ObservableList<Stocks> selectedItems = stocksInTable.getSelectionModel().getSelectedItems();
@@ -232,7 +246,10 @@ public class CalcFrameController {
 
     }
 
-
+    /**
+     * Метод инициализации окна "Расчет доходности"
+     * @param username
+     */
     public void initialize(String username) {
         this.username = username;
         inputDateFrom.setText("2024-01-18");
@@ -243,7 +260,9 @@ public class CalcFrameController {
         getAllStock();
     }
 
-
+    /**
+     * Метод, который запрашивает список акций портфеля конкретного пользователя
+     */
     private void getAllStock() {
         String url = GET_ALL_STOCK_IN_USER + username;
 
@@ -279,7 +298,11 @@ public class CalcFrameController {
         }
     }
 
-    // Распарсить Json в List Stocks
+    /**
+     * Метод с помощью которого преобразуется ответ от сервера в формате Json в список объектов Stocks
+     * @param response json в виде строки
+     * @return List<Stocks> список акций полученный из json
+     */
     public static List<Stocks> parseResponseToList(String response) {
         Gson gson = new Gson();
         Type stocksListType = new TypeToken<List<Stocks>>() {
@@ -288,6 +311,11 @@ public class CalcFrameController {
         return stocksList;
     }
 
+    /**
+     * Отобразить alert
+     * @param title заголовок окна
+     * @param text текст окна
+     */
     public void showAlert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -296,6 +324,9 @@ public class CalcFrameController {
         alert.showAndWait();
     }
 
+    /**
+     * Инициализация колонками таблицы "Список акций к расчету"
+     */
     public void createColumnA() {
         TableColumn<Stocks, String> secIdColumn = new TableColumn<>("SEC ID");
         secIdColumn.setCellValueFactory(new PropertyValueFactory<>("secId"));
@@ -305,7 +336,9 @@ public class CalcFrameController {
 
         stocksInCalcTable.getColumns().setAll(secIdColumn, shortNameColumn);
     }
-
+    /**
+     * Инициализация колонками таблицы "Список акций доступных к расчету"
+     */
     public void createColumnB() {
         TableColumn<Stocks, String> secIdColumn = new TableColumn<>("SEC ID");
         secIdColumn.setCellValueFactory(new PropertyValueFactory<>("secId"));
@@ -315,6 +348,9 @@ public class CalcFrameController {
         stocksInTable.getColumns().setAll(secIdColumn, shortNameColumn);
     }
 
+    /**
+     * Инициализация колонками таблицы "Результат расчета"
+     */
     private void createColumnC() {
         TableColumn<HistoryElemDto, String> secIdColumn = new TableColumn<>("Date");
         secIdColumn.setCellValueFactory(new PropertyValueFactory<>("date"));

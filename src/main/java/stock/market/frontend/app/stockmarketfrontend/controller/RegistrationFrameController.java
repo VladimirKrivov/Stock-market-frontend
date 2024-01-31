@@ -20,7 +20,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class RegistrationFrameController {
-    // Контроллер Окна регистрации
+    /**
+     * Контроллер окна регистрации
+     */
     private static final String REG_URL = "http://localhost:8080/api/v1/auth/register";
 
     private static final Logger logger = LogManager.getLogger(RegistrationFrameController.class);
@@ -56,7 +58,9 @@ public class RegistrationFrameController {
     private Button registerButton;
 
 
-    // Действие при нажатии кнопки регистрации
+    /**
+     * Действие при нажатии кнопки регистрации
+     */
     @FXML
     void handleRegisterButton(ActionEvent event) {
         if (loginInput.getText().length() < 3) {
@@ -83,7 +87,11 @@ public class RegistrationFrameController {
 
     }
 
-    // Вызов Allert
+    /**
+     * Отобразить alert
+     * @param title заголовок окна
+     * @param message текст окна
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -92,7 +100,11 @@ public class RegistrationFrameController {
         alert.showAndWait();
     }
 
-    // Метод регистрации
+    /**
+     * Метод осуществляющий регистрацию
+     * @param login логин пользователя
+     * @param password пароль пользователя
+     */
     private void register(String login, String password) throws Exception {
         HttpURLConnection connection = getHttpURLConnection(login, password);
 
@@ -110,7 +122,11 @@ public class RegistrationFrameController {
         connection.disconnect();
     }
 
-    // Запрос к серверу с запросом регистрации
+    /**
+     * Метод осуществляющий запрос на сервер для регистрации
+     * @param login логин пользователя
+     * @param password пароль пользователя
+     */
     private static HttpURLConnection getHttpURLConnection(String login, String password) throws IOException {
         UserDto userDto = new UserDto(login, password);
 

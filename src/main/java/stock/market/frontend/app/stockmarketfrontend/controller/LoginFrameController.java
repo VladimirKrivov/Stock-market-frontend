@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import stock.market.frontend.app.stockmarketfrontend.StockMarketApp;
 import stock.market.frontend.app.stockmarketfrontend.models.ShortUserDto;
 import stock.market.frontend.app.stockmarketfrontend.models.UserDto;
@@ -22,11 +24,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+/**
+ * Контроллер Окна авторизации
+ */
 public class LoginFrameController {
-    // Контроллер окна авторизации
     private static final String LOGIN_URL = "http://localhost:8080/api/v1/auth/login";
     private static final Logger logger = LogManager.getLogger(LoginFrameController.class);
 
@@ -68,9 +69,6 @@ public class LoginFrameController {
         try {
             userDto = login(loginInput.getText(), passwordInput.getText());
             authUserName = userDto.getName();
-
-
-
             openMenuFrame();
         } catch (NullPointerException e) {
             logger.error("Failed to receive a response from the server");
@@ -82,7 +80,9 @@ public class LoginFrameController {
 
     }
 
-    // Метод открытия основной формы приложения
+    /**
+     * Метод при помощи которого открывается основное окно программы
+     */
     private void openMenuFrame() {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("menu.fxml"));
         Scene scene = null;
@@ -107,7 +107,11 @@ public class LoginFrameController {
         primaryStage.close();
     }
 
-    // Действие при нажатии кнопки регистрации
+    /**
+     * Открыть окно регистрации, по нажатию кнопки "Регистрация"
+     * @param event параметр необходимый JavaFX
+     * @throws IOException
+     */
     @FXML
     void handleRegButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(StockMarketApp.class.getResource("register-menu.fxml"));
@@ -123,7 +127,11 @@ public class LoginFrameController {
 
     }
 
-    // Показать Алерт
+    /**
+     * Отобразить alert
+     * @param title заголовок окна
+     * @param message текст окна
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -132,7 +140,13 @@ public class LoginFrameController {
         alert.showAndWait();
     }
 
-    // Метод обраюотки авторизации
+    /**
+     * Метод с помощью которого осуществляется запрос на авторизацию
+     * @param login логин пользователя
+     * @param password пароль пользователя
+     * @return ShortUserDto - ответ от сервера в виде dto
+     * @throws Exception проброс исключения
+     */
     private ShortUserDto login(String login, String password) throws Exception {
         HttpURLConnection connection = getHttpURLConnection(login, password);
 
@@ -164,7 +178,13 @@ public class LoginFrameController {
 
     }
 
-    // Метод отправки запроса авторизации к сервера
+    /**
+     * Метод с помощью которого идет запрос на сервер для авторизации
+     * @param login логин пользователя
+     * @param password пароль пользователя
+     * @return HttpURLConnection - соединение с сервером
+     * @throws IOException проброс исключения
+     */
     private static HttpURLConnection getHttpURLConnection(String login, String password) throws IOException {
         UserDto userDto = new UserDto(login, password);
         URL url = new URL(LOGIN_URL);

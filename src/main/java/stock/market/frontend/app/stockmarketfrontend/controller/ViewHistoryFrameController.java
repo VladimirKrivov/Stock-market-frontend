@@ -11,9 +11,11 @@ import stock.market.frontend.app.stockmarketfrontend.models.HistoryElemDto;
 
 import java.util.List;
 
+/**
+ * Контроллер окна "Просмотр запроса"
+ */
 public class ViewHistoryFrameController {
 
-    // Контроллер окна детального просмотра запроса из истории запросов
     private HistoryDto historyDtoLocal;
     private String username;
 
@@ -35,7 +37,10 @@ public class ViewHistoryFrameController {
     @FXML
     private TableView<HistoryElemDto> viewCalcincResultTable;
 
-    // метод инициализации окна. Производится во время его открытия
+    /**
+     * * Метод инициализации окна "Просмотр истории". Задействуется во время запуска окна
+     * @param username имя пользователя
+     */
     public void initialize(String username, HistoryDto selectDto) {
         historyDtoLocal = selectDto;
         this.username = username;
@@ -44,7 +49,9 @@ public class ViewHistoryFrameController {
         initTable();
     }
 
-    // Инициализация полей окна и строк таблицы
+    /**
+     * Инициализация полей окна и строк таблицы
+     */
     private void initTable() {
         List<HistoryElemDto> elems = historyDtoLocal.getHistoryElemDto();
         viewCalcincResultTable.getItems().setAll(elems);
@@ -54,7 +61,9 @@ public class ViewHistoryFrameController {
         resultFieldText.setText(historyDtoLocal.getResult());
     }
 
-    // Инициализация таблицы колонками
+    /**
+     * Инициализация таблицы колонками
+     */
     private void initTableColumn() {
         TableColumn<HistoryElemDto, String> secIdColumn = new TableColumn<>("Date");
         secIdColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
