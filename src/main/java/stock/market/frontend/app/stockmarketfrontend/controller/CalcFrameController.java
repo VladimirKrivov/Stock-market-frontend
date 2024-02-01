@@ -37,6 +37,7 @@ public class CalcFrameController {
     private String username;
     private List<Stocks> stocksListTableItemCalc = new ArrayList<>();
     private List<Stocks> stockCalItems = new ArrayList<>();
+
     private HistoryDto historyDtoLocale = new HistoryDto();
 
     @FXML
